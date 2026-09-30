@@ -1,0 +1,108 @@
+openapi: 3.0.3
+info:
+  title: Seminaranmeldung
+  version: 1.0.0
+  description: >
+    Vertrag zwischen Angular-Frontend und Spring-Boot-Backend.
+    Änderungen an der API beginnen hier – Backend-Tests prüfen jede Antwort gegen diese Datei.
+paths:
+  /api/courses:
+    get:
+      summary: Alle Kurse, nach Startdatum sortiert
+      responses:
+        '200':
+          description: Kursliste
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Course'
+  /api/courses/{courseId}/registrations:
+    post:
+      summary: Für einen Kurs anmelden
+      parameters:
+        - name: courseId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegistrationRequest'
+      responses:
+        '201':
+          description: Anmeldung angelegt
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Registration'
+        '400':
+          $ref: '#/components/responses/Problem'
+        '404':
+          $ref: '#/components/responses/Problem'
+        '409':
+          $ref: '#/components/responses/Problem'
+  /api/registrations/{id}:
+    delete:
+      summary: Anmeldung stornieren
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Storniert
+        '404':
+          $ref: '#/components/responses/Problem'
+components:
+  responses:
+    Problem:
+      description: Fehler nach RFC 9457
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'
+  schemas:
+    Course:
+      type: object
+      additionalProperties: false
+      required: [id, title, startDate, location, capacity, freePlaces]
+      properties:
+        id: { type: integer, format: int64 }
+        title: { type: string }
+        startDate: { type: string, format: date }
+        location: { type: string }
+        capacity: { type: integer, minimum: 0 }
+        freePlaces: { type: integer, minimum: 0 }
+    RegistrationRequest:
+      type: object
+      additionalProperties: false
+      required: [name, email]
+      properties:
+        name: { type: string, minLength: 1 }
+        email: { type: string, format: email }
+    Registration:
+      type: object
+      additionalProperties: false
+      required: [id, courseId, name, email]
+      properties:
+        id: { type: integer, format: int64 }
+        courseId: { type: integer, format: int64 }
+        name: { type: string }
+        email: { type: string }
+    Problem:
+      type: object
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }

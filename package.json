@@ -1,0 +1,13 @@
+{
+  "name": "lwk-nrw-ki-impuls",
+  "private": true,
+  "scripts": {
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "lefthook": "^2.1.15"
+  },
+  "allowScripts": {
+    "lefthook": false
+  }
+}
