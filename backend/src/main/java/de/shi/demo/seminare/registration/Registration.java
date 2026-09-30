@@ -2,6 +2,8 @@ package de.shi.demo.seminare.registration;
 
 import de.shi.demo.seminare.course.Course;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -25,14 +27,22 @@ public class Registration {
 
     private Instant createdAt;
 
+    @Enumerated(EnumType.STRING)
+    private RegistrationStatus status;
+
     protected Registration() {
     }
 
-    public Registration(Course course, String name, String email, Instant createdAt) {
+    public Registration(Course course, String name, String email, Instant createdAt, RegistrationStatus status) {
         this.course = course;
         this.name = name;
         this.email = email;
         this.createdAt = createdAt;
+        this.status = status;
+    }
+
+    void confirm() {
+        this.status = RegistrationStatus.CONFIRMED;
     }
 
     public Long getId() {
@@ -53,5 +63,9 @@ public class Registration {
 
     public Instant getCreatedAt() {
         return createdAt;
+    }
+
+    public RegistrationStatus getStatus() {
+        return status;
     }
 }

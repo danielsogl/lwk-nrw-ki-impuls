@@ -27,16 +27,35 @@ public class RegistrationService {
     public Registration register(Long courseId, RegistrationRequest request) {
         Course course = courses.findForUpdateById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Kurs nicht gefunden"));
-        if (registrations.countByCourseId(courseId) >= course.getCapacity()) {
-            throw new CourseFullException();
+        RegistrationStatus status = registrations.confirmedCount(courseId) < course.getCapacity()
+                ? RegistrationStatus.CONFIRMED
+                : RegistrationStatus.WAITLISTED;
+        return registrations.save(new Registration(course, request.name(), request.email(), Instant.now(clock), status));
+    }
+
+    /** Platz auf der Warteliste ab 1, {@code null} bei fester Anmeldung. */
+    @Transactional(readOnly = true)
+    public Integer waitlistPosition(Registration registration) {
+        if (registration.getStatus() != RegistrationStatus.WAITLISTED) {
+            return null;
         }
-        return registrations.save(new Registration(course, request.name(), request.email(), Instant.now(clock)));
+        // Über die ID vergleichen: Die übergebene Entity stammt aus einer anderen Transaktion.
+        return registrations.waitlist(registration.getCourse().getId()).stream()
+                .map(Registration::getId)
+                .toList()
+                .indexOf(registration.getId()) + 1;
     }
 
     @Transactional
     public void cancel(Long registrationId) {
         Registration registration = registrations.findById(registrationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anmeldung nicht gefunden"));
+        courses.findForUpdateById(registration.getCourse().getId()); // sperrt den Kurs wie register()
         registrations.delete(registration);
+        if (registration.getStatus() == RegistrationStatus.CONFIRMED) {
+            registrations.waitlist(registration.getCourse().getId()).stream()
+                    .findFirst()
+                    .ifPresent(Registration::confirm);
+        }
     }
 }

@@ -34,9 +34,10 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/RegistrationRequest'
+      description: Ist der Kurs ausgebucht, landet die Anmeldung auf der Warteliste.
       responses:
         '201':
-          description: Anmeldung angelegt
+          description: Anmeldung angelegt – fest oder auf der Warteliste
           content:
             application/json:
               schema:
@@ -45,11 +46,10 @@ paths:
           $ref: '#/components/responses/Problem'
         '404':
           $ref: '#/components/responses/Problem'
-        '409':
-          $ref: '#/components/responses/Problem'
   /api/registrations/{id}:
     delete:
       summary: Anmeldung stornieren
+      description: Wird eine feste Anmeldung storniert, rückt die älteste Anmeldung der Warteliste nach.
       parameters:
         - name: id
           in: path
@@ -92,12 +92,20 @@ components:
     Registration:
       type: object
       additionalProperties: false
-      required: [id, courseId, name, email]
+      required: [id, courseId, name, email, status, waitlistPosition]
       properties:
         id: { type: integer, format: int64 }
         courseId: { type: integer, format: int64 }
         name: { type: string }
         email: { type: string }
+        status:
+          type: string
+          enum: [CONFIRMED, WAITLISTED]
+        waitlistPosition:
+          type: integer
+          minimum: 1
+          nullable: true
+          description: Platz auf der Warteliste; null bei fester Anmeldung
     Problem:
       type: object
       properties:
