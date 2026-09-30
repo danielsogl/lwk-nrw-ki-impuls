@@ -39,7 +39,7 @@ describe('CourseList', () => {
 
     expect(items[0].textContent).toContain('3 von 12 Plätzen frei');
     expect(items[1].textContent).toContain('Ausgebucht');
-    expect(items[1].querySelector('button')).toBeNull();
+    expect(items[1].querySelector('button')?.textContent).toContain('Auf die Warteliste');
   });
 
   it('meldet für einen Kurs an und lädt die Liste neu', async () => {
@@ -53,7 +53,14 @@ describe('CourseList', () => {
 
     const req = http.expectOne('/api/courses/1/registrations');
     expect(req.request.body).toEqual({ name: 'Clara Test', email: 'clara@example.org' });
-    req.flush({ id: 7, courseId: 1, name: 'Clara Test', email: 'clara@example.org' });
+    req.flush({
+      id: 7,
+      courseId: 1,
+      name: 'Clara Test',
+      email: 'clara@example.org',
+      status: 'CONFIRMED',
+      waitlistPosition: null,
+    });
     TestBed.tick();
     http.expectOne('/api/courses').flush(COURSES);
     await fixture.whenStable();
@@ -61,19 +68,29 @@ describe('CourseList', () => {
     expect(el.querySelector('.confirmation')?.textContent).toContain('Danke, Clara Test!');
   });
 
-  it('meldet einen ausgebuchten Kurs als Fehler', async () => {
-    el.querySelector<HTMLButtonElement>('.course button')!.click();
+  it('setzt bei ausgebuchtem Kurs auf die Warteliste und nennt den Platz', async () => {
+    el.querySelectorAll<HTMLElement>('.course')[1].querySelector('button')!.click();
     await fixture.whenStable();
     type('input[autocomplete=name]', 'Clara Test');
     type('input[type=email]', 'clara@example.org');
     await fixture.whenStable();
-    el.querySelector<HTMLButtonElement>('button[type=submit]')!.click();
 
-    http
-      .expectOne('/api/courses/1/registrations')
-      .flush({ title: 'Kurs ausgebucht' }, { status: 409, statusText: 'Conflict' });
+    const submit = el.querySelector<HTMLButtonElement>('button[type=submit]')!;
+    expect(submit.textContent).toContain('Auf die Warteliste setzen');
+    submit.click();
+
+    http.expectOne('/api/courses/2/registrations').flush({
+      id: 8,
+      courseId: 2,
+      name: 'Clara Test',
+      email: 'clara@example.org',
+      status: 'WAITLISTED',
+      waitlistPosition: 3,
+    });
+    TestBed.tick();
+    http.expectOne('/api/courses').flush(COURSES);
     await fixture.whenStable();
 
-    expect(el.querySelector('[role=alert]')?.textContent).toContain('ausgebucht');
+    expect(el.querySelector('.confirmation')?.textContent).toContain('Sie stehen auf Platz 3 der Warteliste.');
   });
 });

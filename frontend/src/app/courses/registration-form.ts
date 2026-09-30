@@ -1,12 +1,14 @@
+import { NgIf } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, inject, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { email, form, FormField, required } from '@angular/forms/signals';
 import { CourseApi } from './course-api';
 import { Course, Registration } from './course.model';
 
 @Component({
   selector: 'app-registration-form',
-  imports: [FormField],
+  imports: [FormField, NgIf],
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <form (submit)="submit($event)" novalidate>
       <label>
@@ -23,15 +25,15 @@ import { Course, Registration } from './course.model';
           <small class="error">{{ registrationForm.email().errors()[0].message }}</small>
         }
       </label>
-      @if (error()) {
-        <p class="error" role="alert">{{ error() }}</p>
-      }
-      <button type="submit" [disabled]="registrationForm().invalid() || pending()">Verbindlich anmelden</button>
+      <p *ngIf="error()" class="error" role="alert">{{ error() }}</p>
+      <button type="submit" [disabled]="registrationForm().invalid() || pending()">
+        {{ course().freePlaces > 0 ? 'Verbindlich anmelden' : 'Auf die Warteliste setzen' }}
+      </button>
     </form>
   `,
 })
 export class RegistrationForm {
-  private readonly api = inject(CourseApi);
+  constructor(private readonly api: CourseApi) {}
 
   readonly course = input.required<Course>();
   readonly registered = output<Registration>();
@@ -59,7 +61,7 @@ export class RegistrationForm {
       },
       error: (err: HttpErrorResponse) => {
         this.pending.set(false);
-        this.error.set(err.status === 409 ? 'Der Kurs ist leider ausgebucht.' : 'Die Anmeldung ist fehlgeschlagen.');
+        this.error.set(err.status === 400 ? 'Bitte die Eingaben prüfen.' : 'Die Anmeldung ist fehlgeschlagen.');
       },
     });
   }

@@ -23,7 +23,7 @@ class CourseController {
     List<CourseDto> list() {
         return courses.findAllByOrderByStartDateAsc().stream()
                 .map(c -> new CourseDto(c.getId(), c.getTitle(), c.getStartDate(), c.getLocation(), c.getCapacity(),
-                        c.getCapacity() - (int) registrations.countByCourseId(c.getId())))
+                        c.getCapacity() - (int) registrations.confirmedCount(c.getId())))
                 .toList();
     }
 }
