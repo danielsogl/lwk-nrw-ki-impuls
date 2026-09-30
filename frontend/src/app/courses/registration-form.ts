@@ -26,7 +26,9 @@ import { Course, Registration } from './course.model';
       @if (error()) {
         <p class="error" role="alert">{{ error() }}</p>
       }
-      <button type="submit" [disabled]="registrationForm().invalid() || pending()">Verbindlich anmelden</button>
+      <button type="submit" [disabled]="registrationForm().invalid() || pending()">
+        {{ course().freePlaces > 0 ? 'Verbindlich anmelden' : 'Auf die Warteliste setzen' }}
+      </button>
     </form>
   `,
 })
@@ -59,7 +61,7 @@ export class RegistrationForm {
       },
       error: (err: HttpErrorResponse) => {
         this.pending.set(false);
-        this.error.set(err.status === 409 ? 'Der Kurs ist leider ausgebucht.' : 'Die Anmeldung ist fehlgeschlagen.');
+        this.error.set(err.status === 400 ? 'Bitte die Eingaben prüfen.' : 'Die Anmeldung ist fehlgeschlagen.');
       },
     });
   }

@@ -14,13 +14,16 @@
 
       @if (course.freePlaces > 0) {
         <p class="places">{{ course.freePlaces }} von {{ course.capacity }} Plätzen frei</p>
-        @if (selectedCourseId() === course.id) {
-          <app-registration-form [course]="course" (registered)="onRegistered($event)" />
-        } @else {
-          <button type="button" (click)="select(course.id)">Anmelden</button>
-        }
       } @else {
-        <p class="places full">Ausgebucht</p>
+        <p class="places full">Ausgebucht – Anmeldung auf die Warteliste möglich</p>
+      }
+
+      @if (selectedCourseId() === course.id) {
+        <app-registration-form [course]="course" (registered)="onRegistered($event)" />
+      } @else {
+        <button type="button" (click)="select(course.id)">
+          {{ course.freePlaces > 0 ? 'Anmelden' : 'Auf die Warteliste' }}
+        </button>
       }
     </li>
   } @empty {

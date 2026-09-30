@@ -23,7 +23,11 @@ export class CourseList {
 
   protected onRegistered(registration: Registration): void {
     this.selectedCourseId.set(null);
-    this.confirmation.set(`Danke, ${registration.name}! Ihre Anmeldung ist bestätigt.`);
+    this.confirmation.set(
+      registration.status === 'WAITLISTED'
+        ? `Danke, ${registration.name}! Sie stehen auf Platz ${registration.waitlistPosition} der Warteliste.`
+        : `Danke, ${registration.name}! Ihre Anmeldung ist bestätigt.`,
+    );
     this.courses.reload();
   }
 }

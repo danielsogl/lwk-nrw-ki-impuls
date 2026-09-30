@@ -15,9 +15,14 @@ export interface RegistrationRequest {
   email: string;
 }
 
+export type RegistrationStatus = 'CONFIRMED' | 'WAITLISTED';
+
 export interface Registration {
   id: number;
   courseId: number;
   name: string;
   email: string;
+  status: RegistrationStatus;
+  /** Platz auf der Warteliste ab 1, null bei fester Anmeldung */
+  waitlistPosition: number | null;
 }
