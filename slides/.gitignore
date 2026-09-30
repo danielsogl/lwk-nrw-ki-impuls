@@ -1,0 +1,16 @@
+node_modules
+.DS_Store
+dist
+dist-demo
+
+# Export-Artefakte (exportFilename in slides.md)
+ki-fuer-entwicklerinnen-angular-spring-boot.pdf
+ki-fuer-entwicklerinnen-angular-spring-boot.pptx
+*.local
+.vite-inspect
+.remote-assets
+components.d.ts
+
+# Artefakte der Browser-Automatisierung (playwright-cli)
+.playwright
+.playwright-cli

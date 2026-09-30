@@ -1,0 +1,113 @@
+/**
+ * SHI GmbH – Corporate Design Tokens
+ *
+ * Quelle: shi-gmbh.com (Theme-CSS + offizielles Logo, Stand 08/2026).
+ * Ein öffentliches Brand-Manual der SHI GmbH existiert nicht – die Werte
+ * unten sind 1:1 aus dem Live-Auftritt extrahiert.
+ *
+ * ponytail: Akzentfarben (--shi-accent-*) sind KEINE offizielle CI, sondern
+ * eine um das SHI-Blau herum gebaute, kontrastgeprüfte Erweiterung für
+ * Diagramme/Callouts. Bei einem echten Styleguide hier ersetzen.
+ */
+
+:root {
+  /* --- Primär (Logo-Blau #0d82c5 / Web-Blau #0d81c4) --- */
+  --shi-blue: #0d81c4;
+  --shi-blue-hover: #075aae; /* Link-Hover laut Website */
+  --shi-navy: #003c5f; /* dunkle Flächen, Kontrast 11.6:1 auf Weiß */
+  --shi-blue-tint: #f3f8fb;
+  --shi-blue-100: #d6ebf8;
+  --shi-blue-200: #a9d5ef;
+
+  /* Helles Ende des Flächenverlaufs. Bewusst dunkler als --shi-blue:
+     auf #0d81c4 erreicht Weiß nur 4.24:1, auf #0a6ba0 sind es 5.8:1 –
+     erst damit ist kleine Schrift auf der Blaufläche AA-konform. */
+  --shi-blue-surface: #0a6ba0;
+
+  /* Links/Fließtext-Blau: #0d81c4 auf Weiß = 4.24:1 → nur für große Schrift
+     (ab 24px, oder 18.66px fett). Alles darunter nutzt --shi-brand-text. */
+  --shi-brand-text: var(--shi-blue-hover); /* 6.8:1 auf Weiß */
+  /* Textfarbe auf gefüllten Markenflächen (Chips, solide Tags). Im Dark Mode
+     ist --shi-brand-text aufgehellt, dort muss der Text dunkel werden. */
+  --shi-on-brand: #ffffff;
+
+  /* --- Neutral --- */
+  --shi-ink: #3a3a3a;
+  --shi-ink-muted: #4b4f58;
+  --shi-ink-dim: #6b7280; /* zurückgenommen, aber noch 4.8:1 auf Weiß */
+  --shi-line: #e5e5e5;
+  --shi-surface: #f5f5f5;
+  --shi-white: #ffffff;
+
+  /* --- Akzente (Erweiterung, s.o.) – alle ≥4.9:1 auf Weiß --- */
+  --shi-accent-teal: #0d7d7d;
+  --shi-accent-amber: #9a5f00;
+  --shi-accent-coral: #c2453d;
+  --shi-accent-violet: #6b4bb5;
+  --shi-accent-green: #2e7d32;
+
+  /* --- Semantik --- */
+  --shi-info: var(--shi-brand-text); /* Callout-Titel sind klein → Textvariante */
+  --shi-success: var(--shi-accent-green);
+  --shi-warn: var(--shi-accent-amber);
+  --shi-danger: var(--shi-accent-coral);
+
+  /* --- Rollen (werden im Dark Mode umgehängt) --- */
+  --shi-bg: var(--shi-white);
+  --shi-fg: var(--shi-ink);
+  --shi-fg-muted: var(--shi-ink-muted);
+  --shi-fg-dim: var(--shi-ink-dim);
+  --shi-border: var(--shi-line);
+  --shi-card: var(--shi-white);
+  --shi-card-alt: var(--shi-blue-tint);
+  --shi-brand: var(--shi-blue);
+
+  /* --- Diagramme (setup/mermaid-renderer.ts liest sie beim Rendern) --- */
+  --shi-diagram-fill: var(--shi-blue-100); /* Akteure, sekundäre Knoten */
+  --shi-diagram-stroke: var(--shi-blue-hover); /* deren Kanten, autonumber-Kreis */
+  --shi-diagram-activation: var(--shi-blue-200);
+  --shi-diagram-lifeline: #9aa7b4;
+  --shi-diagram-label: var(--shi-card-alt);
+  --shi-diagram-loop-text: var(--shi-fg-muted);
+  --shi-diagram-note: var(--shi-navy);
+  --shi-diagram-note-text: var(--shi-white);
+  --shi-diagram-note-border: var(--shi-navy);
+
+  /* --- Maße --- */
+  --shi-radius: 6px;
+  --shi-skew: -6deg; /* Neigung des Logo-Parallelogramms als Brand-Device */
+
+  /* an die Rolle binden, damit Slidevs eigene Elemente (CodeGroup-Tabs,
+     text-primary) im Dark Mode nicht im hellen Blau stehen bleiben */
+  --slidev-theme-primary: var(--shi-brand);
+}
+
+html.dark {
+  --shi-bg: #0e1116;
+  --shi-fg: #e8edf2;
+  --shi-fg-muted: #9aa7b4;
+  --shi-fg-dim: #7c8794;
+  --shi-border: #262e38;
+  --shi-card: #161b22;
+  --shi-card-alt: #10202c;
+  --shi-brand: #3ba3e0; /* aufgehelltes SHI-Blau, 6.5:1 auf #0e1116 */
+  --shi-brand-text: #6ec1ef;
+  --shi-on-brand: #0e1116; /* dunkler Text auf hellem Chip, 9.5:1 */
+  --shi-surface: #161b22;
+
+  --shi-diagram-fill: #16324a;
+  --shi-diagram-stroke: var(--shi-brand);
+  --shi-diagram-activation: #16324a;
+  --shi-diagram-lifeline: var(--shi-fg-dim);
+  --shi-diagram-label: var(--shi-card);
+  --shi-diagram-loop-text: var(--shi-fg);
+  --shi-diagram-note: #16324a;
+  --shi-diagram-note-text: var(--shi-fg);
+  --shi-diagram-note-border: var(--shi-brand);
+
+  --shi-accent-teal: #45c2bd;
+  --shi-accent-amber: #e8a33d;
+  --shi-accent-coral: #f0776e;
+  --shi-accent-violet: #a68af0;
+  --shi-accent-green: #5cbf62;
+}

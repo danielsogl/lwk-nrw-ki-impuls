@@ -1,0 +1,33 @@
+{
+  "name": "lwk-nrw-ki-impuls-slides",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export",
+    "export:pptx": "slidev export --format pptx",
+    "skills": "npx skills update -p -y"
+  },
+  "dependencies": {
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/open-sans": "^5.3.0",
+    "@slidev/cli": "^53.0.0",
+    "@slidev/theme-default": "^0.25.0",
+    "mermaid": "^12.0.0",
+    "vue": "^3.5.42"
+  },
+  "devDependencies": {
+    "@iconify-json/carbon": "^1.2.27",
+    "@iconify-json/logos": "^1.2.14",
+    "@iconify-json/simple-icons": "^1.2.96",
+    "playwright-chromium": "^1.63.0"
+  },
+  "allowScripts": {
+    "playwright-chromium": true,
+    "fsevents": true
+  },
+  "overrides": {
+    "lodash-es": "^4.18.1"
+  }
+}

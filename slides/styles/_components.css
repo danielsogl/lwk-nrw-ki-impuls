@@ -1,0 +1,745 @@
+/* SHI – Styles der wiederverwendbaren Komponenten (components/*.vue) */
+
+/* --- Card / CardGrid --- */
+/* gap setzt CardGrid.vue inline (Prop `gap`), hier steht bewusst nichts. */
+.shi-grid {
+  display: grid;
+}
+.shi-card {
+  background: var(--shi-card);
+  border: 1px solid var(--shi-border);
+  border-radius: var(--shi-radius);
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.shi-card--accent {
+  border-top: 3px solid var(--shi-brand);
+}
+.shi-card--filled {
+  background: var(--shi-card-alt);
+  border-color: transparent;
+}
+.shi-card__icon {
+  font-size: 1.5rem;
+  color: var(--shi-brand);
+  line-height: 1;
+}
+.shi-card__title {
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--shi-fg);
+}
+.shi-card__body {
+  font-size: 0.9rem;
+  color: var(--shi-fg-muted);
+  line-height: 1.5;
+}
+
+/* --- Stat (Zahlen & Fakten) --- */
+.shi-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding-left: 0.9rem;
+  border-left: 4px solid var(--shi-brand);
+}
+.shi-stat__value {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.05;
+  color: var(--shi-brand);
+  font-variant-numeric: tabular-nums;
+}
+.shi-stat__label {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--shi-fg);
+}
+.shi-stat__hint {
+  font-size: 0.78rem;
+  color: var(--shi-fg-muted);
+}
+.shi-bleed .shi-stat {
+  border-left-color: var(--shi-white);
+}
+.shi-bleed .shi-stat__value {
+  color: var(--shi-white);
+}
+.shi-bleed .shi-stat__hint {
+  color: var(--shi-blue-200);
+}
+
+/* --- Callout --- */
+.shi-callout {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  border-radius: var(--shi-radius);
+  border-left: 4px solid var(--shi-callout-color);
+  background: color-mix(in srgb, var(--shi-callout-color) 10%, transparent);
+  font-size: 0.92rem;
+}
+.shi-callout__icon {
+  color: var(--shi-callout-color);
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+}
+.shi-callout__title {
+  font-weight: 700;
+  color: var(--shi-callout-color);
+  margin-bottom: 0.15rem;
+}
+
+/* --- Steps (nummerierter Ablauf) --- */
+.shi-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.shi-steps--row {
+  flex-direction: row;
+  align-items: stretch;
+}
+.shi-step {
+  display: flex;
+  gap: 0.85rem;
+  flex: 1;
+}
+.shi-steps--row .shi-step {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.shi-step__num {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+  place-items: center;
+  background: var(--shi-brand-text);
+  color: var(--shi-on-brand);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border-radius: var(--shi-radius);
+  transform: skewX(var(--shi-skew));
+}
+.shi-step__num > span {
+  transform: skewX(calc(-1 * var(--shi-skew)));
+}
+.shi-step__title {
+  font-weight: 600;
+  color: var(--shi-fg);
+}
+.shi-step__body {
+  font-size: 0.88rem;
+  color: var(--shi-fg-muted);
+  line-height: 1.5;
+}
+
+/* --- Flow (Ablaufdiagramm, Pipeline, Agenten-Loop) ---
+   Alle Maße hängen an den Variablen unten. Wer den Abstand ändert, bekommt
+   die Pfeilspitzen automatisch mittig in der neuen Lücke. */
+.shi-flow-wrap {
+  --shi-flow-gap: 2.1rem;
+  --shi-flow-arrow: 0.62rem; /* Länge der Pfeilspitze */
+  --shi-flow-arrow-half: 0.45rem; /* halbe Breite der Pfeilspitze */
+  --shi-flow-loop-h: 1.5rem;
+}
+.shi-flow {
+  display: flex;
+  gap: var(--shi-flow-gap);
+}
+.shi-flow--column {
+  --shi-flow-gap: 1.5rem;
+  flex-direction: column;
+}
+.shi-flow__node {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+  padding: 0.85rem 0.7rem;
+  background: var(--shi-card);
+  border: 1px solid var(--shi-border);
+  border-top: 3px solid var(--shi-brand);
+  border-radius: var(--shi-radius);
+}
+.shi-flow__node--brand {
+  background: var(--shi-card-alt);
+}
+.shi-flow__node--muted {
+  border-top-color: var(--shi-border);
+}
+/* Pfeilspitze in der Lücke zum Vorgänger – als Pseudo-Element, damit jeder
+   Knoten ein einzelnes Element bleibt und v-click darauf greifen kann. */
+.shi-flow__node + .shi-flow__node::before {
+  content: '';
+  position: absolute;
+  /* mittig in der Lücke zum Vorgänger */
+  left: calc(-1 * (var(--shi-flow-gap) + var(--shi-flow-arrow)) / 2);
+  top: 50%;
+  transform: translateY(-50%);
+  border-left: var(--shi-flow-arrow) solid var(--shi-brand);
+  border-top: var(--shi-flow-arrow-half) solid transparent;
+  border-bottom: var(--shi-flow-arrow-half) solid transparent;
+}
+.shi-flow--column .shi-flow__node + .shi-flow__node::before {
+  left: 50%;
+  top: calc(-1 * (var(--shi-flow-gap) + var(--shi-flow-arrow)) / 2);
+  transform: translateX(-50%);
+  border-left: var(--shi-flow-arrow-half) solid transparent;
+  border-right: var(--shi-flow-arrow-half) solid transparent;
+  border-top: var(--shi-flow-arrow) solid var(--shi-brand);
+  border-bottom: 0;
+}
+.shi-flow__icon {
+  font-size: 1.45rem;
+  color: var(--shi-brand);
+}
+.shi-flow__label {
+  font-weight: 600;
+  font-size: 0.92rem;
+  line-height: 1.25;
+  color: var(--shi-fg);
+}
+.shi-flow__hint {
+  font-size: 0.76rem;
+  color: var(--shi-fg-muted);
+  line-height: 1.35;
+}
+/* Rückführung: Klammer unter der Kette, Pfeil zurück auf den ersten Knoten. */
+.shi-flow__loop {
+  position: relative;
+  margin: 0.1rem 1.5rem 0;
+  padding-top: var(--shi-flow-loop-h);
+}
+.shi-flow__loop::after {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--shi-flow-loop-h);
+  border: 2px solid var(--shi-border);
+  border-top: 0;
+  border-radius: 0 0 var(--shi-radius) var(--shi-radius);
+}
+.shi-flow__loop::before {
+  content: '';
+  position: absolute;
+  left: -0.47rem;
+  top: -0.15rem;
+  border-bottom: 0.6rem solid var(--shi-border);
+  border-left: 0.45rem solid transparent;
+  border-right: 0.45rem solid transparent;
+}
+/* Beschriftung unter der Klammer statt darauf – mehrzeiliger Text würde die
+   Linie sonst zerschneiden. */
+.shi-flow__loop span {
+  display: block;
+  margin-top: 0.4rem;
+  text-align: center;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  color: var(--shi-fg-muted);
+}
+
+/* --- Layers (Architektur in Schichten) --- */
+.shi-layers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.shi-layer {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--shi-card);
+  border: 1px solid var(--shi-border);
+  border-left: 4px solid var(--shi-brand);
+  border-radius: var(--shi-radius);
+}
+.shi-layer--brand {
+  background: var(--shi-card-alt);
+}
+.shi-layer--muted {
+  border-left-color: var(--shi-border);
+}
+.shi-layer__title {
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--shi-fg);
+}
+.shi-layer__hint {
+  font-size: 0.74rem;
+  color: var(--shi-fg-muted);
+}
+.shi-layer__blocks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.shi-layer__block {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: var(--shi-radius);
+  background: var(--shi-surface);
+  border: 1px solid var(--shi-border);
+  font-size: 0.84rem;
+  color: var(--shi-fg);
+}
+.shi-layer--brand .shi-layer__block {
+  background: var(--shi-bg);
+}
+.shi-layer__icon {
+  font-size: 1.05rem;
+  color: var(--shi-brand);
+}
+
+/* --- Timeline --- */
+/* Alle Maße hängen an diesen Variablen – Punktgröße, Schiene und Abstand
+   müssen zusammenpassen, sonst reißt die Linie zwischen zwei Punkten. */
+.shi-timeline {
+  --shi-tl-gap: 1.1rem; /* Abstand der Einträge */
+  --shi-tl-rail: 1.35rem; /* Abstand Text zur Punktspalte */
+  --shi-tl-dot: 12px;
+  --shi-tl-dot-top: 0.42rem; /* Punkt auf Höhe der ersten Textzeile */
+  --shi-tl-line: 2px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--shi-tl-gap);
+  padding-left: var(--shi-tl-rail);
+}
+.shi-timeline__item {
+  position: relative;
+}
+.shi-timeline__item::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--shi-tl-rail));
+  top: var(--shi-tl-dot-top);
+  width: var(--shi-tl-dot);
+  height: var(--shi-tl-dot);
+  border-radius: 50%;
+  background: var(--shi-bg);
+  border: 3px solid var(--shi-brand);
+  /* über der Verbindungslinie, damit sie hinter dem Punkt durchläuft */
+  z-index: 1;
+}
+.shi-timeline__item[data-tone='muted']::before {
+  border-color: var(--shi-border);
+}
+/* Verbindung zum nächsten Punkt: von Punktmitte zu Punktmitte, also über den
+   Eintragsabstand hinaus nach unten. */
+.shi-timeline__item::after {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--shi-tl-rail));
+  margin-left: calc((var(--shi-tl-dot) - var(--shi-tl-line)) / 2);
+  width: var(--shi-tl-line);
+  top: calc(var(--shi-tl-dot-top) + var(--shi-tl-dot) / 2);
+  bottom: calc(-1 * (var(--shi-tl-gap) + var(--shi-tl-dot-top) + var(--shi-tl-dot) / 2));
+  background: var(--shi-brand);
+}
+.shi-timeline__item[data-line='muted']::after {
+  background: var(--shi-border);
+}
+.shi-timeline__item[data-line='none']::after {
+  content: none;
+}
+.shi-timeline__when {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--shi-brand-text);
+}
+.shi-timeline__title {
+  font-weight: 600;
+}
+.shi-timeline__body {
+  font-size: 0.88rem;
+  color: var(--shi-fg-muted);
+}
+
+/* --- Tag / Pill --- */
+.shi-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.16rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.5;
+  background: color-mix(in srgb, var(--shi-tag-color) 14%, transparent);
+  color: var(--shi-tag-color);
+  border: 1px solid color-mix(in srgb, var(--shi-tag-color) 30%, transparent);
+}
+.shi-tag--solid {
+  background: var(--shi-tag-color);
+  color: var(--shi-on-brand);
+  border-color: transparent;
+}
+.shi-bleed .shi-tag {
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* --- LogoWall (Kunden, Tech-Stack) --- */
+.shi-logowall {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.6rem 2.4rem;
+}
+.shi-logowall img,
+.shi-logowall__icon {
+  max-height: var(--shi-logowall-h);
+  width: auto;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: 0.72;
+  transition: filter 0.2s, opacity 0.2s;
+}
+/* Icon-Logos skalieren über die Schriftgröße; die Breite kommt aus dem
+   Seitenverhältnis des Icons. Wortmarken werden sonst absurd breit. */
+.shi-logowall__icon {
+  font-size: var(--shi-logowall-h);
+  max-width: calc(var(--shi-logowall-h) * 3.6);
+  /* Icons sind je nach Sammlung Masken in currentColor (simple-icons) oder
+     mehrfarbige Hintergrundbilder (logos). `brightness(0)` plattet beides zur
+     Silhouette – nur `grayscale` würde die Masken unverändert lassen und
+     `invert` sie fälschlich in die Gegenfarbe drehen. */
+  filter: grayscale(1) brightness(0);
+}
+html.dark .shi-logowall__icon {
+  filter: grayscale(1) brightness(0) invert(1);
+}
+.shi-logowall--original img,
+.shi-logowall--original .shi-logowall__icon {
+  filter: none;
+  opacity: 1;
+}
+html.dark .shi-logowall img {
+  filter: grayscale(1) invert(1) brightness(1.6);
+}
+html.dark .shi-logowall--original img,
+html.dark .shi-logowall--original .shi-logowall__icon {
+  filter: none;
+}
+/* Farbige Fremdlogos sind für helle Hintergründe gezeichnet – schwarze
+   Wortmarken (OpenAI, Anthropic, Solr) verschwinden sonst auf Dunkel. Die
+   Logos zu invertieren wäre eine Verfremdung und markenrechtlich heikel;
+   stattdessen bekommt die Wand ein helles Band. `color` auf dem Band sorgt
+   dafür, dass einfarbige Icons (simple-icons) darauf dunkel zeichnen. */
+html.dark .shi-logowall--original {
+  background: var(--shi-white);
+  color: var(--shi-ink);
+  border-radius: var(--shi-radius);
+  padding: 1.1rem 1.6rem;
+}
+
+/* --- SpeakerCard --- */
+.shi-speaker {
+  display: flex;
+  gap: 1.6rem;
+  align-items: center;
+}
+.shi-speaker__photo {
+  position: relative;
+  flex-shrink: 0;
+  width: var(--shi-speaker-size, 190px);
+  aspect-ratio: 1;
+}
+.shi-speaker__photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--shi-brand);
+  border-radius: var(--shi-radius);
+  transform: skewX(var(--shi-skew)) translate(10px, 10px);
+}
+.shi-speaker__photo img {
+  position: relative; /* über dem geneigten Akzent, ohne z-index: -1 */
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--shi-radius);
+}
+.shi-bleed .shi-speaker__photo::after {
+  background: rgba(255, 255, 255, 0.35);
+}
+.shi-speaker__name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+.shi-speaker__role {
+  color: var(--shi-brand-text);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.shi-bleed .shi-speaker__role {
+  color: var(--shi-blue-200);
+}
+.shi-speaker__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin-top: 0.7rem;
+  font-size: 0.85rem;
+}
+.shi-speaker__links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-bottom: 0;
+  color: var(--shi-fg-muted);
+}
+.shi-speaker__links a:hover {
+  color: var(--shi-brand-text);
+}
+.shi-bleed .shi-speaker__links a {
+  color: var(--shi-blue-100);
+}
+
+/* --- Footer (slide-bottom.vue) --- */
+.shi-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2.1rem;
+  padding: 0 3rem 0 3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.68rem;
+  color: var(--shi-fg-muted);
+  pointer-events: none;
+  z-index: 10;
+}
+.shi-footer__logo {
+  height: 17px;
+  width: auto;
+  opacity: 0.9;
+}
+.shi-footer__event {
+  padding-left: 0.9rem;
+  border-left: 1px solid var(--shi-border);
+}
+.shi-footer__spacer {
+  flex: 1;
+}
+.shi-footer__page {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: var(--shi-fg);
+}
+/* Bei halbseitigen Bildlayouts endet die Fußzeile an der Bildkante –
+   sonst steht die Seitenzahl unlesbar auf dem Bild. */
+.shi-footer--image-right {
+  right: 50%;
+  padding-right: 1rem;
+}
+.shi-footer--image-left {
+  left: 50%;
+  padding-left: 1rem;
+}
+.shi-footer__badge {
+  padding: 0.08rem 0.45rem;
+  border-radius: 3px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  background: color-mix(in srgb, var(--shi-danger) 14%, transparent);
+  color: var(--shi-danger);
+}
+
+/* --- Transcript (aus BASTA-Deck) --- */
+.shi-transcript {
+  border: 1px solid var(--shi-border);
+  border-radius: var(--shi-radius);
+  background: var(--shi-card);
+  overflow: hidden;
+}
+.shi-transcript__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--shi-surface);
+  border-bottom: 1px solid var(--shi-border);
+}
+.shi-transcript__dots {
+  flex-shrink: 0;
+  width: 2.1rem;
+  height: 0.5rem;
+  background-image: radial-gradient(circle, var(--shi-fg-dim) 0.22rem, transparent 0.24rem);
+  background-size: 0.72rem 0.5rem;
+  opacity: 0.5;
+}
+.shi-transcript__tool {
+  font-family: var(--slidev-code-font-family, monospace);
+  font-size: 0.72rem;
+  /* --shi-fg-dim ist auf WEISS auf 4.8:1 gerechnet; auf der grauen Kopfzeile
+     (--shi-surface) bleiben davon 4.43:1 übrig. Deshalb die kräftigere Rolle. */
+  color: var(--shi-fg-muted);
+}
+.shi-transcript__body {
+  padding: 0.7rem 0.75rem;
+  font-family: var(--slidev-code-font-family, monospace);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+.shi-transcript__line {
+  display: flex;
+  gap: 0.6rem;
+}
+.shi-transcript__marker {
+  flex-shrink: 0;
+  width: 0.8rem;
+  text-align: center;
+  /* Keine Deckkraft: --shi-accent-green und --shi-danger sind exakt auf 4.5:1
+     eingestellt, jede Abschwächung fällt darunter. */
+}
+.shi-transcript__text {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.shi-transcript__line--prompt {
+  color: var(--shi-brand-text);
+  font-weight: 600;
+}
+.shi-transcript__line--tool {
+  color: var(--shi-fg-muted);
+}
+.shi-transcript__line--out {
+  color: var(--shi-fg-dim);
+}
+.shi-transcript__line--ok {
+  color: var(--shi-accent-green);
+}
+.shi-transcript__line--err {
+  color: var(--shi-danger);
+}
+.shi-transcript__line--note {
+  color: var(--shi-fg-muted);
+  font-style: italic;
+  /* `inherit` erbte vom monospace gesetzten Body – hier ist die Textschrift
+     gemeint, weil die Zeile Kommentar ist und nicht Teil der Sitzung. */
+  font-family: var(--slidev-font-family, inherit);
+}
+
+/* --- BarChart (aus Master-Class-Deck) --- */
+.shi-bars {
+  --shi-bars-label: 13rem;
+  --shi-bars-value: 6.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.shi-bars__row {
+  display: grid;
+  grid-template-columns: var(--shi-bars-label) 1fr var(--shi-bars-value);
+  align-items: center;
+  gap: 0.85rem;
+}
+.shi-bars__label {
+  font-size: 0.98rem;
+  line-height: 1.28;
+  color: var(--shi-fg);
+  text-align: right;
+}
+.shi-bars__hint {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--shi-fg-muted);
+}
+.shi-bars__track {
+  position: relative;
+  height: 1.8rem;
+  background: var(--shi-surface);
+  border-radius: 3px;
+}
+.shi-bars__zero {
+  position: absolute;
+  top: -0.2rem;
+  bottom: -0.2rem;
+  width: 1px;
+  background: var(--shi-fg-muted);
+}
+.shi-bars--signed .shi-bars__zero {
+  width: 0;
+  border-left: 1px dashed var(--shi-fg-muted);
+}
+.shi-bars__bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 3px;
+  min-width: 3px;
+}
+.shi-bars__range {
+  position: absolute;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: var(--shi-fg-muted);
+}
+.shi-bars__range::before,
+.shi-bars__range::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 2px;
+  height: 0.85rem;
+  transform: translateY(-50%);
+  background: var(--shi-fg-muted);
+}
+.shi-bars__range::before {
+  left: 0;
+}
+.shi-bars__range::after {
+  right: 0;
+}
+.shi-bars__dot {
+  position: absolute;
+  top: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.shi-bars__value {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: var(--shi-fg);
+  font-variant-numeric: tabular-nums;
+}
+.shi-bars__ci {
+  display: block;
+  font-size: 0.74rem;
+  font-weight: 400;
+  color: var(--shi-fg-muted);
+  white-space: nowrap;
+}
+.shi-bars__caption {
+  margin-top: 0.7rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--shi-fg-muted);
+}

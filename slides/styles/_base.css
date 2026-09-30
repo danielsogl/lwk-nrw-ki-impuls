@@ -1,0 +1,191 @@
+/* SHI – Basistypografie & Grundelemente (Open Sans, wie im Web-Auftritt) */
+
+.slidev-layout {
+  background: var(--shi-bg);
+  color: var(--shi-fg);
+  padding: 2.6rem 3rem 3.4rem;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3,
+.slidev-layout h4 {
+  color: var(--shi-fg);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.slidev-layout h1 {
+  font-size: 2.4rem;
+  line-height: 1.2;
+  margin-bottom: 0.6rem;
+}
+.slidev-layout h2 {
+  font-size: 1.75rem;
+  line-height: 1.25;
+  font-weight: 600;
+}
+.slidev-layout h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.slidev-layout h4 {
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+/* Blaue Akzentlinie unter der Folienüberschrift – zentrales CI-Erkennungsmerkmal */
+.slidev-layout:not(.shi-bleed) > h1:first-child::after {
+  content: '';
+  display: block;
+  width: 3.2rem;
+  height: 4px;
+  margin-top: 0.7rem;
+  background: var(--shi-brand);
+  transform: skewX(var(--shi-skew));
+}
+
+/* Untertitel direkt unter der Überschrift. Das Default-Theme setzt hier
+   `opacity: .5` – auf Weiß nur noch 2.4:1 Kontrast. Deshalb echte Textfarbe. */
+.slidev-layout h1 + p {
+  opacity: 1;
+  color: var(--shi-fg-muted);
+  margin-top: 0.4rem;
+}
+
+.slidev-layout a {
+  color: var(--shi-brand-text);
+  text-decoration: none;
+  border-bottom: 1px solid color-mix(in srgb, var(--shi-brand-text) 40%, transparent);
+}
+.slidev-layout a:hover {
+  border-bottom-color: currentColor;
+}
+
+.slidev-layout strong {
+  font-weight: 700;
+  color: var(--shi-fg);
+}
+
+.slidev-layout ul,
+.slidev-layout ol {
+  padding-left: 1.15rem;
+}
+.slidev-layout li {
+  margin: 0.35rem 0;
+}
+.slidev-layout ul > li::marker {
+  color: var(--shi-brand);
+}
+.slidev-layout ol > li::marker {
+  color: var(--shi-brand);
+  font-weight: 700;
+}
+
+.slidev-layout blockquote {
+  border-left: 4px solid var(--shi-brand);
+  background: var(--shi-card-alt);
+  padding: 0.7rem 1.1rem;
+  border-radius: 0 var(--shi-radius) var(--shi-radius) 0;
+  color: var(--shi-fg);
+  font-style: normal;
+}
+
+.slidev-layout hr {
+  border: 0;
+  border-top: 1px solid var(--shi-border);
+  margin: 1.2rem 0;
+}
+
+/* Tabellen */
+.slidev-layout table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+.slidev-layout th {
+  text-align: left;
+  background: var(--shi-card-alt);
+  color: var(--shi-fg);
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--shi-brand);
+}
+.slidev-layout td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--shi-border);
+}
+
+/* Code */
+.slidev-layout :not(pre) > code {
+  background: var(--shi-card-alt);
+  color: var(--shi-fg);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+.slidev-layout pre.shiki,
+.slidev-layout .slidev-code-wrapper pre {
+  border: 1px solid var(--shi-border);
+  border-radius: var(--shi-radius);
+}
+.slidev-code {
+  border-radius: var(--shi-radius);
+}
+
+/* Bilder in Content-Folien immer sauber gerundet + beschnitten */
+.slidev-layout:not(.shi-bleed) img:not(.shi-raw) {
+  border-radius: var(--shi-radius);
+}
+
+/* Mermaid/PlantUML mittig */
+.slidev-layout .mermaid,
+.slidev-layout .slidev-diagram {
+  display: flex;
+  justify-content: center;
+}
+
+/* Flächige Folien (Cover, Section, Outro, Statement).
+   Kein !important: die Layouts darunter setzen ihr eigenes Padding. */
+.shi-bleed {
+  padding: 0;
+  color: var(--shi-white);
+}
+.shi-bleed h1,
+.shi-bleed h2,
+.shi-bleed h3,
+.shi-bleed strong {
+  color: var(--shi-white);
+}
+.shi-bleed h1 + p {
+  color: var(--shi-blue-100);
+}
+.shi-bleed a {
+  color: var(--shi-white);
+  border-bottom-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Brand-Device: geneigte Fläche, abgeleitet aus dem SHI-Logo */
+.shi-tilt {
+  transform: skewX(var(--shi-skew));
+}
+
+/* Kleiner Overline über Überschriften: `<div class="shi-overline">Kapitel 2</div>` */
+.shi-overline {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--shi-brand);
+  margin-bottom: 0.35rem;
+}
+.shi-bleed .shi-overline {
+  color: var(--shi-blue-200);
+}
+
+/* Utility: gedämpfter Sekundärtext */
+.shi-muted {
+  color: var(--shi-fg-muted);
+}
