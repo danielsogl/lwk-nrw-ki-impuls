@@ -1,0 +1,31 @@
+@if (confirmation()) {
+  <p class="confirmation" role="status">{{ confirmation() }}</p>
+}
+
+@if (courses.error()) {
+  <p class="error" role="alert">Die Kurse konnten nicht geladen werden. Läuft das Backend?</p>
+}
+
+<ul class="courses">
+  @for (course of courses.value(); track course.id) {
+    <li class="course">
+      <h2>{{ course.title }}</h2>
+      <p class="meta">{{ course.startDate | date: 'dd.MM.yyyy' }} · {{ course.location }}</p>
+
+      @if (course.freePlaces > 0) {
+        <p class="places">{{ course.freePlaces }} von {{ course.capacity }} Plätzen frei</p>
+        @if (selectedCourseId() === course.id) {
+          <app-registration-form [course]="course" (registered)="onRegistered($event)" />
+        } @else {
+          <button type="button" (click)="select(course.id)">Anmelden</button>
+        }
+      } @else {
+        <p class="places full">Ausgebucht</p>
+      }
+    </li>
+  } @empty {
+    @if (!courses.isLoading()) {
+      <li>Aktuell sind keine Kurse geplant.</li>
+    }
+  }
+</ul>

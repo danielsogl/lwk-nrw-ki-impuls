@@ -1,0 +1,13 @@
+# Gates vor jedem Commit – gelten für Menschen und Agenten gleichermaßen.
+pre-commit:
+  parallel: true
+  commands:
+    frontend-lint:
+      glob: "frontend/src/**"
+      run: cd frontend && npm run lint
+    frontend-test:
+      glob: "frontend/src/**"
+      run: cd frontend && npm test -- --watch=false
+    backend-test:
+      glob: "{backend/src/**,backend/pom.xml,api/**}"
+      run: cd backend && ./mvnw -q test

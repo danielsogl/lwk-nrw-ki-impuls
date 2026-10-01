@@ -1,0 +1,34 @@
+# Dieselben Prüfungen wie .github/workflows/checks.yml, für GitLab.
+# Im Projekt zusätzlich einstellen: Protected Branch main, „Pipelines must succeed“ (beides Free),
+# Pflicht-Approvals und Code-Owner-Freigabe (ab Premium, siehe .github/CODEOWNERS).
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+stages: [test]
+
+backend:
+  stage: test
+  image: maven:3-eclipse-temurin-25
+  variables:
+    MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  cache:
+    key: maven
+    paths: [.m2/repository]
+  script:
+    - cd backend
+    - mvn -B test
+
+frontend:
+  stage: test
+  image: node:24
+  cache:
+    key:
+      files: [frontend/package-lock.json]
+    paths: [frontend/.npm]
+  script:
+    - cd frontend
+    - npm ci --cache .npm
+    - npm run lint
+    - npm test -- --watch=false
