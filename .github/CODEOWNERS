@@ -1,0 +1,8 @@
+# Änderungen an Prüfungen und Agenten-Vorgaben brauchen die Freigabe der Verantwortlichen.
+# GitLab liest dieselbe Datei (Code-Owner-Freigabe ab Premium).
+/.github/        @danielsogl
+/.gitlab-ci.yml  @danielsogl
+/scripts/hooks/  @danielsogl
+/AGENTS.md       @danielsogl
+/REVIEW.md       @danielsogl
+/lefthook.yml    @danielsogl

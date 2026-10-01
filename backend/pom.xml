@@ -57,6 +57,13 @@
 			<version>2.44.9</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Architekturregeln aus AGENTS.md als Tests: ArchitekturTest -->
+		<dependency>
+			<groupId>com.tngtech.archunit</groupId>
+			<artifactId>archunit-junit5</artifactId>
+			<version>1.4.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>

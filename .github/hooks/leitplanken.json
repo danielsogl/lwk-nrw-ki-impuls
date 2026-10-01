@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      { "type": "command", "bash": "node scripts/hooks/baseline.mjs start", "powershell": "node scripts/hooks/baseline.mjs start", "timeoutSec": 180 }
+    ],
+    "preToolUse": [
+      { "type": "command", "bash": "./scripts/hooks/pre-tool-use.sh", "timeoutSec": 10 }
+    ],
+    "agentStop": [
+      { "type": "command", "bash": "node scripts/hooks/baseline.mjs stop", "powershell": "node scripts/hooks/baseline.mjs stop", "timeoutSec": 180 }
+    ]
+  }
+}
