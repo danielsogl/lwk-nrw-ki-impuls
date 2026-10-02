@@ -21,7 +21,8 @@ class RegistrationController {
     @PostMapping("/api/courses/{courseId}/registrations")
     @ResponseStatus(HttpStatus.CREATED)
     RegistrationDto register(@PathVariable Long courseId, @Valid @RequestBody RegistrationRequest request) {
-        return RegistrationDto.from(service.register(courseId, request));
+        Registration registration = service.register(courseId, request);
+        return RegistrationDto.from(registration, service.waitlistPosition(registration));
     }
 
     @DeleteMapping("/api/registrations/{id}")
